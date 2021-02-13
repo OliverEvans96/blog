@@ -3,3 +3,5 @@ subTitle: "Blog"
 baseUrl: https://oliverevans96.github.io/blog
 template:
   directory: template
+exclude:
+- .git

@@ -30,15 +30,22 @@
 
                 
                 <section id="content" class="col-sm-12">
-                    <h2 id="intro-to-lammps">Intro to LAMMPS</h2>
-<p>This post is meant as a total beginner's intro to LAMMPS, the molecular dynamics simulation software. It's been a few years since I've worked on this, but I remember how overwhelming it felt trying to learn about LAMMPS and piece together all of the relevant information to actually be able to run a simulation.</p>
+                    <h1 id="intro-to-lammps">Intro to LAMMPS</h1>
+<p>This post is meant as a total beginner's intro to <a href="https://lammps.sandia.gov">LAMMPS</a>, the <a href="en.wikipedia.org/wiki/Molecular_dynamics">molecular dynamics</a> simulation software, and assumes very little prior knowledge of MD simulation.
+It's been a few years since I've worked on this, but I remember how overwhelming it felt trying to learn about LAMMPS and piece together all of the relevant information to actually be able to run a simulation, so hopefully I can help to ease that process for someone else.</p>
 <h2 id="resources">Resources</h2>
 <p>I've found the <a href="https://lammps.sandia.gov/doc/Manual.html">official LAMMPS docs</a> to be quite good. It's a bit overwhelming at first and you might have to read through it multiple times, but I think you'll find it to be well written.</p>
 <p>Also, the examples (<a href="https://lammps.sandia.gov/doc/Examples.html">docs</a>, <a href="https://github.com/lammps/lammps/tree/master/examples">code</a>) are very helpful to gain a practical example of how to run a simulation.</p>
-<p>If you look at the <a href="https://github.com/lammps/lammps/tree/master/examples/peptide">peptide example</a>, you'll find two important files: the <strong>input script</strong> (<a href="https://github.com/lammps/lammps/blob/master/examples/peptide/in.peptide"><code>in.peptide</code></a>) and the <strong>data file</strong> (<a href="https://github.com/lammps/lammps/blob/master/examples/peptide/data.peptide"><code>data.peptide</code></a>) <sup id="fnref1:1"><a href="#fn:1" class="footnote-ref">2</a></sup>.</p>
 <h2 id="overview">Overview</h2>
-<p>The input script contains your instructions for LAMMPS describing all the details of your simulation. On <a href="https://github.com/lammps/lammps/blob/master/examples/peptide/in.peptide#L13">Line 13</a>, you'll see <code>read_data data.peptide</code>, which loads the data file, which contains the initial positions, bonds, etc. of your atoms. So the input script describes <strong>how</strong> to run the simulation, and the data file describes <strong>what</strong> you're simulating.</p>
-<h2 id="input-script">Input Script</h2>
+<p>If you look at the <a href="https://github.com/lammps/lammps/tree/master/examples/peptide">peptide example</a>, you'll find two important files: the <strong>input script</strong> (<a href="https://github.com/lammps/lammps/blob/master/examples/peptide/in.peptide"><code>in.peptide</code></a>) and the <strong>data file</strong> (<a href="https://github.com/lammps/lammps/blob/master/examples/peptide/data.peptide"><code>data.peptide</code></a>).</p>
+<p><em>Brief aside:</em> For some strange reason, LAMMPS files tend to be named with the file extension <em>first</em> as opposed to the normal convention of putting the extension at the end.
+It's as if you had named a photo <code>jpg.myface</code> instead of <code>myface.jpg</code>.
+This is totally optional, the file extension is only a hint to tell the user what the file contains.
+You can name your input and data files however you want, and as long as you use the same name in your code, it will work fine.</p>
+<p>The input script contains your instructions for LAMMPS describing all the details of your simulation.
+On <a href="https://github.com/lammps/lammps/blob/master/examples/peptide/in.peptide#L13">Line 13</a>, you'll see <code>read_data data.peptide</code>, which loads the data file, which contains the initial positions, bonds, etc. of your atoms. </p>
+<p>So the input script describes <strong>how</strong> to run the simulation, and the data file describes <strong>what</strong> you're simulating.</p>
+<h2 id="input-script-">Input script (<a href="https://lammps.sandia.gov/doc/Commands_input.html">docs</a>)</h2>
 <p>Other commands in the peptide example input script:</p>
 <ul>
 <li><a href="https://github.com/lammps/lammps/blob/master/examples/peptide/in.peptide#L3-L4">L3-4</a> describes the physical units for all values and some details about the atom model.</li>
@@ -50,14 +57,12 @@
 <li><a href="https://github.com/lammps/lammps/blob/master/examples/peptide/in.peptide#L28-L36">L28-36</a> determine what kind of files LAMMPS should produce as it runs. The important one is <a href="https://github.com/lammps/lammps/blob/master/examples/peptide/in.peptide#L28">L28</a>, which specifies that the positions and velocities of all atoms should be written to a text file (<code>dump.peptide</code>) every 10 timesteps. The <strong>dump file</strong> (a.k.a <code>.lammpstrj</code>) is the final output of the simulation that you will later analyze.</li>
 </ul>
 <p>You might also find <a href="https://lammps.sandia.gov/doc/write_restart.html"><code>write_restart</code></a>, which is like a checkpoint in case you need to stop and resume your simulation. This is important since they can take days or weeks to complete. A restart file generally contains more information than the dump file, and is stored as a binary file rather than a text file, so it's not suitable for analyzing your simulation as you would analyze the dump file to gain insight from your simulation.</p>
-<p>You can find the full input file reference <a href="https://lammps.sandia.gov/doc/Commands_input.html">here</a>.</p>
-<h2 id="data-file">Data file</h2>
+<h2 id="data-file-">Data file (<a href="https://lammps.sandia.gov/doc/read_data.html">docs</a>)</h2>
 <p>The data file describes the atoms, their interactions, and their initial positions. The most common interactions are bonds (2 atoms apply forces on each other as a function of distance) and angles (forces applied on three atoms connected by two bonds as a function of the angle between the bonds). You can see both depicted here:</p>
 <img width="300" src="https://haygot.s3.amazonaws.com/questions/733811_668877_ans_eb092412db5141c3ac60aa7b99434c0c.png" />
 <p>There are also other interactions, including dihedrals and impropers, which act on groups of more than 3 atoms.</p>
 <p>Note that these interactions (angles, bonds, dihedrals, impropers) are <strong>permanent and unbreakable</strong>. If a bond exists between two specific atoms, it will continue to exist for the whole simulation. Also keep in mind that a bond does not <em>constrain</em> two atoms to always be an exact distance apart. Rather, it <em>strongly encourages</em> them to maintain that distance by applying forces on them.</p>
 <p>However, there are also <strong>transient</strong> interactions between atoms, primarily the pairwise electrostatic interaction described the Lennard-Jones potential specified in the <code>pair_style</code> command in the input script. This force is only applied between two atoms if they are close enough to be considered neighbors on the neighbor list. If they move away from each other during the simulation, they will no longer interact electrostatically.</p>
-<p>Anyway, back to the data file.</p>
 <h3 id="header">Header</h3>
 <ul>
 <li>The first section of the file (<a href="https://github.com/lammps/lammps/blob/master/examples/peptide/data.peptide#L1-L13">L1-13</a> in <code>data.peptide</code>) describes the contents of the file. These should match the number of entries in each section below.</li>
@@ -66,22 +71,91 @@
 <h3 id="atom-sections">Atom sections</h3>
 <p>Every atom has a <code>type</code>, which generally corresponds to an element. So all of your oxygen atoms might be type 1, and your hydrogen atoms might be type 2. However, if you have oxygen atoms in both your droplet and your substrate, you might choose to give them different types to capture the fundamentally different way they interact with other atoms.</p>
 <p>In the <code>Masses</code> section (<a href="https://github.com/lammps/lammps/blob/master/examples/peptide/data.peptide#L19-L34">L19-34</a>), there are two columns: the first one is the type, and the second one is the mass. So e.g. every atom of type 1 has a mass of <code>12.0110</code> (in whatever units are specified by the <a href="https://lammps.sandia.gov/doc/units.html"><code>units</code></a> command in the input script).</p>
-<p>In the <code>Atoms</code> section (<a href="https://github.com/lammps/lammps/blob/master/examples/peptide/data.peptide#L137-L2142">L137-2142</a>), each individual atom is described.</p>
-<h3 id="coef-sections">Coef sections</h3>
+<p>In the <code>Atoms</code> section (<a href="https://github.com/lammps/lammps/blob/master/examples/peptide/data.peptide#L137-L2142">L137-2142</a>), each individual atom is described. Each atom has a unique id which differentiates it from all other atoms. The columns depend on the <code>atom_style</code> specified in input script. Refer to the table in the Atoms section of the <a href="https://lammps.sandia.gov/doc/read_data.html">data file reference</a> for details. In this example, we have <code>atom_style full</code>, so the columns are:</p>
+<ul>
+<li>atom-ID </li>
+<li>molecule-ID </li>
+<li>atom-type</li>
+<li>q (charge)</li>
+<li>x (initial)</li>
+<li>y (initial)</li>
+<li>z (initial)</li>
+</ul>
+<p>Similarly, the <code>Velocities</code> section (<a href="https://github.com/lammps/lammps/blob/master/examples/peptide/data.peptide#L2144-L4149">L2144-4149</a>) lists the initial x, y, and z components of velocity for each atom (again, the first column is atom-id).</p>
+<h3 id="coefficient-sections">Coefficient sections</h3>
+<p>Just like we have &quot;types&quot; of atoms, we have &quot;types&quot; of bonds which are different from one another. Just like the <code>Masses</code> section lists the mass for each type of atom, the other <code>Coeff</code> sections give parameters for each type of interaction. Similar to the <code>Atoms</code> section, the meaning of the parameters in each section depends on the interaction style defined in the input file. We can look up the order and meaning of the parameters on the docs page for that specific interaction style.</p>
+<p>All of these interaction parameters are generally determined experimentally, so if you're just working on a simulation, <strong>you'll have to find published values for your specific materials</strong>.
+In my case, I found the parameters necessary to create a mica substrate from the <a href="https://bionanostructures.com/interface-md/">INTERFACE</a> force field.</p>
+<p>For example, take the <code>Bond Coeffs</code> section (<a href="https://github.com/lammps/lammps/blob/master/examples/peptide/data.peptide#L53-L72">L53-72</a>). In the input script, we have <code>bond_style harmonic</code>. The <a href="https://lammps.sandia.gov/doc/bond_harmonic.html"><code>bond_harmonic</code></a> doc page gives the equation for the force applied on each atom due to a harmonic as a function of the distance $r$ between the atoms as</p>
+<pre><code>E = K(r - r_0)^2</code></pre>
+<p>and lists the parameters <em>in order</em> as:</p>
+<ul>
+<li><code>K</code> (energy/distance^2)</li>
+<li><code>r_0</code> (distance)</li>
+</ul>
+<p>So, the <a href="https://github.com/lammps/lammps/blob/master/examples/peptide/data.peptide#L55">first entry</a> in the <code>Bond Coeffs</code> section is</p>
+<pre><code>  1  249.999999    1.490000</code></pre>
+<p>which creates a bond with </p>
+<ul>
+<li><code>type = 1</code></li>
+<li><code>K = 249.999999</code></li>
+<li><code>r_0 = 1.490000</code></li>
+</ul>
+<p>The <code>Angle Coeffs</code>, <code>Dihedral Coeffs</code>, and <code>Improper Coeffs</code> similarly create interaction types with the specified parameters.</p>
+<h3 id="pair-coeffs-section">Pair Coeffs section</h3>
+<p>However, the <code>Pair Coeffs</code> section is special in that the <em>pairs coefficients are defined for each atom type</em>.
+So if you have 14 atom types, then you must also have 14 lines in the <code>Pair Coeffs</code> section.
+This is because unlike other interactions which only occur between specific atoms,
+electrostatic interactions can occur between any two atoms that are sufficiently close to one another,
+and the interaction depends only on the type of the atoms involved.</p>
+<p>In the peptide example, we have</p>
+<p><code>pair_style lj/charmm/coul/long 8.0 10.0 10.0</code></p>
+<p>and the <a href="https://lammps.sandia.gov/doc/pair_charmm.html"><code>pair_charmm</code> doc page</a> says that we therefore need to define the following pair coeffs for each atom:</p>
+<ul>
+<li><code>ϵ</code> (energy units)</li>
+<li><code>σ</code> (distance units)</li>
+<li><code>ϵ_14</code> (energy units) (optional)</li>
+<li><code>σ_14</code> (distance units) (optional)</li>
+</ul>
+<p>and the <a href="https://github.com/lammps/lammps/blob/master/examples/peptide/data.peptide#L38-39">first entries</a> in the <code>Pair Coeffs</code> section is</p>
+<pre><code>  1    0.110000    3.563595    0.110000    3.563595
+  2    0.080000    3.670503    0.010000    3.385415</code></pre>
+<p>So if two atoms of type 1 are sufficiently close, they will each feel a lennard jones force as a function of their distance, with <code>ϵ = 0.110000</code>, <code>σ = 3.563595</code>, etc.
+And two atoms of type 2 would interact with <code>ϵ = 0.110000</code> and <code>σ = 3.563595</code>.</p>
+<p>But what happens when an atom of type 1 has a pairwise interaction with an atom of type 2?
+The answer is that their interaction is defined by coefficients determined through <a href="https://en.wikipedia.org/wiki/Combining_rules">mixing rules</a>, as specified in detail in the <a href="https://lammps.sandia.gov/doc/pair_modify.html">relevant LAMMPS docs</a>.
+Basically, a special average of the individual pure coefficients is used to determine the coefficients of the mixed interaction.</p>
 <h3 id="interaction-sections">Interaction sections</h3>
-<p>You can read the full data file reference <a href="https://lammps.sandia.gov/doc/read_data.html">here</a>.</p>
+<p>The final important section of the data file is the interaction sections, called <code>Bonds</code>, <code>Angles</code>, etc., where the specific bonds, angles, etc. among our atoms are actually defined. This is the simplest part of the file. </p>
+<ul>
+<li>The first column is a unique interaction id</li>
+<li>The first column is the interaction <em>type</em></li>
+<li>The remaining columns are the unique ids of the atoms involved in the relationship.</li>
+</ul>
+<p>For example the <a href="https://github.com/lammps/lammps/blob/master/examples/peptide/data.peptide#L4153">first line</a> of the <code>Bonds</code> section (<a href="https://github.com/lammps/lammps/blob/master/examples/peptide/data.peptide#L4151-L5517">L4151-5517</a>) is</p>
+<pre><code>      1   3      1      7</code></pre>
+<p>This creates bond #1 with type #3 between atom #1 and atom #7.</p>
+<p>Since bonds are symmetric, the order of the atoms doesn't matter. It would be equivalent to write</p>
+<pre><code>      1   3      7      2</code></pre>
+<p>However, the order <em>is</em> significant in the other non-pairwise interactions.
+For example, the <code>Angles</code> section of the <a href="https://lammps.sandia.gov/doc/read_data.html#Atoms"><code>read_data</code> docs</a> says</p>
+<blockquote>
+<p>The 3 atoms are ordered linearly within the angle. Thus the central atom (around which the angle is computed) is the atom2 in the list. E.g. H,O,H for a water molecule.</p>
+</blockquote>
 <h2 id="visualization">Visualization</h2>
 <p>You can see that in the peptide input script, they are also dumping <code>.jpg</code> and <code>.mpg</code> files. I don't recommend this. LAMMPS is great for simulation, but it produces very ugly images/movies. For visualization, use <a href="http://www.ks.uiuc.edu/Research/vmd/">VMD</a>, which you can use interactively or automatically to create beautiful images like this:</p>
 <img width="500" src="https://www.ks.uiuc.edu/Research/vmd/minitutorials/tachyonao/vmd-hiv1capsid.jpg" />
 <p>VMD can load your LAMMPS dump file directly using the <a href="https://www.ks.uiuc.edu/Research/vmd/plugins/topotools/#TOC-readlammpsdata-file-name-atom-style"><code>readlammpsdata</code> command</a>.</p>
-<div class="footnotes">
-<hr />
-<ol>
-<li id="fn:1">
-<p>For some strange reason, LAMMPS files tend to be named with the file extension <em>first</em> as opposed to the normal convention of putting the extension at the end. It's as if you had named a photo <code>jpg.myface</code> instead of <code>myface.jpg</code>. This is totally optional, the file extension is only a hint to tell the user what the file contains. You can name your input and data files however you want, and as long as you use the same name in your code, it will work fine.&#160;<a href="#fnref1:1" rev="footnote" class="footnote-backref">&#8617;</a></p>
-</li>
-</ol>
-</div>
+<h2 id="post-analysis">Post-analysis</h2>
+<p>Assuming that you're not just running simulations to make pretty pictures, you'll want to perform some kind of post-analysis on the results of your simulation.
+This is highly problem-dependent, and you're likely going to have to write a bunch of code from scratch to calculate the exact thing you're interested in.
+You'll do this by parsing the dump file, which is basically a huge text file (or set of files) with one line per atom per time step, and then running your custom calculations.
+Of course, you should search around first to see if someone else has already written code that would work for you, especially if you're doing a routine calculation on a novel subject.</p>
+<p>In my case, I was working on droplet wetting, and I wrote <a href="https://github.com/OliverEvans96/lotus">a C++ library</a> using <a href="https://root.cern">ROOT</a> to detect the boundary of the droplet and analyze the change in geometry over time. If my code works for you, feel free to use it. Although like most free software, it comes with no warranty, and you may have to spend a fair amount of time trying to get it running on your machine with your data.</p>
+<h2 id="good-luck">Good luck!</h2>
+<p>Hopefully this is enough to get you started started running some exciting simulations. Feel free to contact me at oliverevans96@gmail.com if you'd like to discuss my work or yours.</p>
+<p>Happy simulating!</p>
+<p>Oliver</p>
                 </section>
 
             </div>

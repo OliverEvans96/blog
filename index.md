@@ -1,3 +1,5 @@
 # Oliver's website
 
-- [Blog]("/blog.html")
+# Posts
+
+- [Intro to LAMMPS](lammps.html)

@@ -5,3 +5,8 @@ template:
   directory: template
 exclude:
 - .git
+
+# https://github.com/CouscousPHP/Couscous/issues/226
+scripts:
+    after:
+        - rm .couscous/generated/.git

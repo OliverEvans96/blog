@@ -30,10 +30,48 @@
 
                 
                 <section id="content" class="col-sm-12">
-                    <h1 id="posts">Posts</h1>
-<ul>
-<li><a href="lammps.html">Intro to LAMMPS</a></li>
-</ul>
+                    <h1 id="couscous-light-template">Couscous Light template</h1>
+<p><img src="screenshot.png" alt="" /></p>
+<h2 id="usage">Usage</h2>
+<p>To use the template, set it up in your <code>couscous.yml</code> configuration file:</p>
+<pre><code class="language-yaml">template:
+    url: https://github.com/CouscousPHP/Template-Light</code></pre>
+<h2 id="configuration">Configuration</h2>
+<p>Here are all the variables you can set in your <code>couscous.yml</code>:</p>
+<pre><code class="language-yaml"># Base URL of the published website
+baseUrl: http://username.github.io/project
+
+# Used to link to the GitHub project
+github:
+    user: myself
+    repo: my-project
+
+title: My project
+subTitle: This is a great project.
+
+# The left menu bar
+menu:
+    items:
+        home:
+            text: Home page
+            # You can use relative urls
+            relativeUrl: doc/faq.html
+        foo:
+            text: Another link
+            # Or absolute urls
+            absoluteUrl: https://example.com</code></pre>
+<p>Note that the menu items can also contain HTML:</p>
+<pre><code class="language-yaml">home:
+    text: "&lt;i class=\"fa fa-github\"&gt;&lt;/i&gt; Home page"
+    relativeUrl: doc/faq.html</code></pre>
+<h2 id="menu">Menu</h2>
+<p>To set the current menu item (i.e. highlighted menu item), set the <code>currentMenu</code>
+key in the Markdown files:</p>
+<pre><code class="language-markdown">---
+currentMenu: home
+---
+
+# Welcome</code></pre>
                 </section>
 
             </div>

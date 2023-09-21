@@ -1,4 +1,4 @@
-# Signing git commits from emacs
+# Signing git commits from emacs with magit and pinentry
 
 I've been using emacs for a while and been interested in `magit`, but I haven't been able create any commits due to GPG errors.
 
